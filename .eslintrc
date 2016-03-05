@@ -1,0 +1,43 @@
+{
+  "parser"  : "babel-eslint",
+  "extends" : [
+    "standard",
+    "standard-react",
+    "eslint-config-airbnb"
+  ],
+  "plugins" : [
+    "flow-vars",
+    "react"
+  ],
+  "env"     : {
+    "browser" : true,
+    "mocha": true
+  },
+  "globals" : {
+    "Action"       : false,
+    "__DEV__"      : false,
+    "__PROD__"     : false,
+    "__DEBUG__"    : false,
+    "__DEBUG_NEW_WINDOW__" : false,
+    "__BASENAME__" : false
+  },
+  "rules": {
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 2,
+    "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "spaced-comment": 0,
+    "no-redeclare": 0,
+    "no-unused-vars": 0,
+    "no-console": 0,
+    "arrow-body-style": 0,
+    //Temporarirly disabled due to a possible bug in babel-eslint (todomvc example)
+    "block-scoped-var": 0,
+    // Temporarily disabled for test/* until babel/babel-eslint#33 is resolved
+    "padded-blocks": 0,
+    "max-len": [2, 120, 2],
+    "flow-vars/define-flow-type": 1,
+    "flow-vars/use-flow-type": 1,
+  }
+}
