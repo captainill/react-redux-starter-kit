@@ -21,6 +21,9 @@
     "__DEBUG_NEW_WINDOW__" : false,
     "__BASENAME__" : false
   },
+ "parserOptions": {
+   "generators": true
+  },
   "rules": {
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
@@ -32,6 +35,8 @@
     "no-unused-vars": 0,
     "no-console": 0,
     "arrow-body-style": 0,
+    "prefer-template": 0,
+    "no-return-assign": 0,
     //Temporarirly disabled due to a possible bug in babel-eslint (todomvc example)
     "block-scoped-var": 0,
     // Temporarily disabled for test/* until babel/babel-eslint#33 is resolved
