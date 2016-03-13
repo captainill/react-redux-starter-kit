@@ -3,7 +3,7 @@ import BlockStyleControls from './BlockStyleControls';
 import InlineStyleControls from './InlineStyleControls';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 
-require('../../../node_modules/draft-js/dist/Draft.css');
+require('draft-js/dist/Draft.css');
 require('./RichEditor.css');
 
 // Custom overrides for "code" style.
@@ -70,7 +70,7 @@ export class RichEditor extends React.Component {
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
     let className = 'RichEditor-editor';
-    var contentState = editorState.getCurrentContent();
+    const contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
       if (contentState.getBlockMap().first().getType() !== 'unstyled') {
         className += ' RichEditor-hidePlaceholder';

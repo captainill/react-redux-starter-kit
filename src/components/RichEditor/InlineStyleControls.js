@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import StyleButton from './StyleButton';
 
 const INLINE_STYLES = [
@@ -9,7 +9,7 @@ const INLINE_STYLES = [
 ];
 
 const InlineStyleControls = (props) => {
-  var currentStyle = props.editorState.getCurrentInlineStyle();
+  const currentStyle = props.editorState.getCurrentInlineStyle();
   return (
     <div className="RichEditor-controls">
       { INLINE_STYLES.map(type =>
@@ -23,6 +23,11 @@ const InlineStyleControls = (props) => {
       )}
     </div>
   );
+};
+
+InlineStyleControls.propTypes = {
+  editorState: PropTypes.object,
+  onToggle: PropTypes.func
 };
 
 export default InlineStyleControls;

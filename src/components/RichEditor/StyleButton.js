@@ -1,33 +1,25 @@
 import React, { PropTypes } from 'react';
 
-class StyleButton extends React.Component {
-  static props: {
-    style: PropTypes.object,
-    active: PropTypes.boolean,
-    label: PropTypes.string,
-    onToggle: PropTypes.func
-  }
+const StyleButton = (props) => {
+  const className = (props.active) ? 'RichEditor-activeButton' : 'RichEditor-styleButton';
 
-  constructor() {
-    super();
-    this.onToggle = (e) => {
-      e.preventDefault();
-      this.props.onToggle(this.props.style);
-    };
-  }
+  const onToggle = (e) => {
+    e.preventDefault();
+    props.onToggle(props.style);
+  };
 
-  render() {
-    let className = 'RichEditor-styleButton';
-    if (this.props.active) {
-      className += ' RichEditor-activeButton';
-    }
+  return (
+    <span className={className} onMouseDown={onToggle}>
+      {props.label}
+    </span>
+  );
+};
 
-    return (
-      <span className={className} onMouseDown={this.onToggle}>
-        {this.props.label}
-      </span>
-    );
-  }
-}
+StyleButton.propTypes = {
+  style: PropTypes.object,
+  active: PropTypes.boolean,
+  label: PropTypes.string,
+  onToggle: PropTypes.func
+};
 
 export default StyleButton;

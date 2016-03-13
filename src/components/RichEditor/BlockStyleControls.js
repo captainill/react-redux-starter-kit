@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import StyleButton from './StyleButton';
 
 const BLOCK_TYPES = [
@@ -31,6 +31,11 @@ const BlockStyleControls = (props) => {
       )}
     </div>
   );
+};
+
+BlockStyleControls.propTypes = {
+  editorState: PropTypes.object,
+  onToggle: PropTypes.func
 };
 
 export default BlockStyleControls;
