@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { increment, doubleAsync } from '../../redux/modules/counter';
 import DuckImage from './Duck.jpg';
-import classes from './HomeView.scss';
+require('./HomeView.scss');
 
 // We can use Flow (http://flowtype.org/) to type our component's props
 // and state. For convenience we've included both regular propTypes and
@@ -34,7 +34,7 @@ export class HomeView extends React.Component<void, Props, void> {
         <div className="row">
           <div className="col-xs-2 col-xs-offset-5">
             <img
-              className={classes.duck}
+              className="duck"
               src={DuckImage}
               alt="This is a duck, because Redux."
             />
@@ -44,7 +44,7 @@ export class HomeView extends React.Component<void, Props, void> {
         <h2>
           Sample Counter:
           {' '}
-          <span className={classes['counter--green']}>{this.props.counter}</span>
+          <span className="counter--green">{this.props.counter}</span>
         </h2>
         <button className="btn btn-default" onClick={this.props.increment}>
           Increment

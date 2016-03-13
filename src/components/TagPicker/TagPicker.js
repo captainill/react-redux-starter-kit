@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactTagSelect from 'react-tag-select';
+import ReactTagSelect from '@oiok/react-tag-select';
 
-require('react-tag-select/dist/style.css');
+require('@oiok/react-tag-select/dist/style.css');
 
 /* eslint-disable */
 var Countries = ['Afghanistan','Albania','Algeria','Andorra','Angola','Anguilla','Antigua &amp; Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas'

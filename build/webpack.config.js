@@ -5,6 +5,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import config from '../config';
 import _debug from 'debug';
 
+const postcssImport = require('postcss-import');
+
 const debug = _debug('app:webpack:config');
 const paths = config.utils_paths;
 const { __DEV__, __PROD__, __TEST__ } = config.globals;
@@ -146,7 +148,7 @@ webpackConfig.module.loaders = [{
 // ------------------------------------
 // We use cssnano with the postcss loader, so we tell
 // css-loader not to duplicate minimization.
-const BASE_CSS_LOADER = 'css?sourceMap&-minimize';
+const BASE_CSS_LOADER = 'css?sourceMap';
 
 // Add any packge names here whose styles need to be treated as CSS modules.
 // These paths will be combined into a single regex.
@@ -165,57 +167,59 @@ const isUsingCSSModules = !!PATHS_TO_TREAT_AS_CSS_MODULES.length;
 const cssModulesRegex = new RegExp(`(${PATHS_TO_TREAT_AS_CSS_MODULES.join('|')})`);
 
 // Loaders for styles that need to be treated as CSS modules.
-if (isUsingCSSModules) {
-  const cssModulesLoader = [
-    BASE_CSS_LOADER,
-    'modules',
-    'importLoaders=1',
-    'localIdentName=[name]__[local]___[hash:base64:5]'
-  ].join('&');
-
-  webpackConfig.module.loaders.push({
-    test: /\.scss$/,
-    include: cssModulesRegex,
-    loaders: [
-      'style',
-      cssModulesLoader,
-      'postcss',
-      'sass?sourceMap'
-    ]
-  });
-
-  webpackConfig.module.loaders.push({
-    test: /\.css$/,
-    include: cssModulesRegex,
-    loaders: [
-      'style',
-      cssModulesLoader,
-      'postcss'
-    ]
-  });
-}
+// if (isUsingCSSModules) {
+//   const cssModulesLoader = [
+//     BASE_CSS_LOADER,
+//     'modules',
+//     'importLoaders=1',
+//     'localIdentName=[name]__[local]___[hash:base64:5]'
+//   ].join('&');
+//
+//   webpackConfig.module.loaders.push({
+//     test: /\.scss$/,
+//     include: cssModulesRegex,
+//     loaders: [
+//       'style',
+//       cssModulesLoader,
+//       'postcss',
+//       'sass?sourceMap'
+//     ]
+//   });
+//
+//   webpackConfig.module.loaders.push({
+//     test: /\.css$/,
+//     include: cssModulesRegex,
+//     loaders: [
+//       'style',
+//       cssModulesLoader,
+//       'postcss'
+//     ]
+//   });
+// }
 
 // Loaders for files that should not be treated as CSS modules.
 const excludeCSSModules = isUsingCSSModules ? cssModulesRegex : false;
 webpackConfig.module.loaders.push({
-  test: /\.scss$/,
-  exclude: excludeCSSModules,
-  loaders: [
-    'style',
-    BASE_CSS_LOADER,
-    'postcss',
-    'sass?sourceMap'
-  ]
+  test: /\.s?css$/,
+  loader: ExtractTextPlugin.extract(
+    'style', BASE_CSS_LOADER + '!sass!postcss?parser=postcss-scss'
+  )
 });
-webpackConfig.module.loaders.push({
-  test: /\.css$/,
-  exclude: excludeCSSModules,
-  loaders: [
-    'style',
-    BASE_CSS_LOADER,
-    'postcss'
-  ]
-});
+
+webpackConfig.plugins.push(
+  new ExtractTextPlugin('[name].[contenthash].css', {
+    allChunks: true
+  })
+);
+// webpackConfig.module.loaders.push({
+//   test: /\.css$/,
+//   exclude: excludeCSSModules,
+//   loaders: [
+//     'style',
+//     BASE_CSS_LOADER,
+//     'postcss'
+//   ]
+// });
 
 // ------------------------------------
 // Style Configuration
@@ -225,6 +229,7 @@ webpackConfig.sassLoader = {
 };
 
 webpackConfig.postcss = [
+  postcssImport({ addDependencyTo: webpack }),
   cssnano({
     autoprefixer: {
       add: true,
@@ -238,6 +243,11 @@ webpackConfig.postcss = [
     sourcemap: true
   })
 ];
+
+// webpackConfig.postcss = [
+//   postcssImport({ addDependencyTo: webpack }),
+//   require('postcss-discard-comments')
+// ];
 
 // File loaders
 /* eslint-disable */

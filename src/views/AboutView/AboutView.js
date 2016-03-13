@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactTagSelect from 'react-tag-select';
-import { Editor, EditorState } from 'draft-js';
+import RichEditor from 'components/RichEditor/RichEditor';
 import TagPicker from 'components/TagPicker/TagPicker';
 
 require('./AboutView.scss');
@@ -9,19 +8,15 @@ type Props = {
 
 };
 export class AboutView extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { editorState: EditorState.createEmpty() };
-    this.onChange = (editorState) => this.setState({ editorState });
-  }
-
   render() {
-    const tags = this.state.tags;
     return (
-      <div>
-        <Editor editorState={this.state.editorState} onChange={this.onChange} />;
-        <TagPicker />
+      <div className="py4">
+        <div className="max-width-4 mx-auto mb4">
+          <div className="">
+            <RichEditor />
+            <TagPicker />
+          </div>
+        </div>
       </div>
     );
   }
