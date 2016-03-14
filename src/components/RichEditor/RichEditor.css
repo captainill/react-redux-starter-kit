@@ -62,8 +62,20 @@
 }
 
 .RichEditor-link {
+  position: relative;
   color: #3b5998;
   text-decoration: underline;
+}
+
+.RichEditor-link-hover{
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 11px;
+  background-color: black;
+  border-radius: 2px;
+  padding: 1px 6px;
+  color: white;
 }
 
 .RichEditor-input {

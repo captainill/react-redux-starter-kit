@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 
 const StyleButton = (props) => {
-  const className = (props.active) ? 'RichEditor-activeButton' : 'RichEditor-styleButton';
+  let className = 'RichEditor-styleButton';
+  className += (props.active) ? ' RichEditor-activeButton' : '';
 
   const onToggle = (e) => {
     e.preventDefault();

@@ -12,8 +12,10 @@ export class AboutView extends React.Component {
     return (
       <div className="py4">
         <div className="max-width-4 mx-auto mb4">
-          <div className="">
+          <div className="mb4">
             <RichEditor />
+          </div>
+          <div className="mb4">
             <TagPicker />
           </div>
         </div>
