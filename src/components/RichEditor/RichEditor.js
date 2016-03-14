@@ -1,10 +1,42 @@
 import React from 'react';
 import BlockStyleControls from './BlockStyleControls';
 import InlineStyleControls from './InlineStyleControls';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import LinkControl from './LinkControl';
+import DraftLink from './DraftLink';
+import {
+  convertToRaw,
+  CompositeDecorator,
+  ContentState,
+  Editor,
+  EditorState,
+  Entity,
+  RichUtils
+} from 'draft-js';
+
 
 require('draft-js/dist/Draft.css');
 require('./RichEditor.css');
+
+
+function findLinkEntities(contentBlock, callback) {
+  contentBlock.findEntityRanges(
+    (character) => {
+      const entityKey = character.getEntity();
+      return (
+        entityKey !== null &&
+        Entity.get(entityKey).getType() === 'LINK'
+      );
+    },
+    callback
+  );
+}
+
+const decorator = new CompositeDecorator([
+  {
+    strategy: findLinkEntities,
+    component: DraftLink,
+  },
+]);
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -26,14 +58,22 @@ function getBlockStyle(block) {
 export class RichEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
+
+    this.state = {
+      editorState: EditorState.createEmpty(decorator)
+    };
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => this.setState({ editorState });
+    this.logState = () => {
+      const content = this.state.editorState.getCurrentContent();
+      console.log(convertToRaw(content));
+    };
 
     this.handleKeyCommand = (command) => this._handleKeyCommand(command);
     this.toggleBlockType = (type) => this._toggleBlockType(type);
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+    this.toggleLinkStyle = (style) => this._toggleLinkStyle(style);
   }
 
   _handleKeyCommand(command) {
@@ -64,6 +104,16 @@ export class RichEditor extends React.Component {
     );
   }
 
+  _toggleLinkStyle(entityKey) {
+    this.onChange(
+      RichUtils.toggleLink(
+        this.state.editorState,
+        this.state.editorState.getSelection(),
+        entityKey
+      )
+    );
+  }
+
   render() {
     const { editorState } = this.state;
 
@@ -86,6 +136,10 @@ export class RichEditor extends React.Component {
         <InlineStyleControls
           editorState={editorState}
           onToggle={this.toggleInlineStyle}
+        />
+        <LinkControl
+          editorState={editorState}
+          onToggle={this.toggleLinkStyle}
         />
         <div className={className} onClick={this.focus}>
           <Editor

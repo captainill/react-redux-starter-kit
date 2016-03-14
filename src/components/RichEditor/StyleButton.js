@@ -16,8 +16,8 @@ const StyleButton = (props) => {
 };
 
 StyleButton.propTypes = {
-  style: PropTypes.object,
-  active: PropTypes.boolean,
+  style: PropTypes.string,
+  active: PropTypes.bool,
   label: PropTypes.string,
   onToggle: PropTypes.func
 };

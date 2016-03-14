@@ -60,3 +60,13 @@
 .RichEditor-activeButton {
   color: #5890ff;
 }
+
+.RichEditor-link {
+  color: #3b5998;
+  text-decoration: underline;
+}
+
+.RichEditor-input {
+  margin-right: 10px;
+  padding: 3px;
+}
