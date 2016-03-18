@@ -1,5 +1,6 @@
 /* @flow */
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { increment, doubleAsync } from '../../redux/modules/counter';
 import DuckImage from './Duck.jpg';
@@ -32,6 +33,7 @@ export class HomeView extends React.Component<void, Props, void> {
     return (
       <div className="container text-center">
         <div className="row">
+          <Link to="about" >About</Link>
           <div className="col-xs-2 col-xs-offset-5">
             <img
               className="duck"

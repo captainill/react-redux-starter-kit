@@ -3,7 +3,8 @@ import {
   CompositeDecorator,
   EditorState,
   Entity,
-  RichUtils
+  RichUtils,
+  getVisibleSelectionRect
 } from 'draft-js';
 
 class LinkControl extends React.Component {
@@ -29,6 +30,9 @@ class LinkControl extends React.Component {
     e.preventDefault();
     const editorState = this.props.editorState;
     const selection = editorState.getSelection();
+    const rect = getVisibleSelectionRect(window);
+    console.log('rect', rect);
+
     if (!selection.isCollapsed()) {
       this.setState({
         showURLInput: true,

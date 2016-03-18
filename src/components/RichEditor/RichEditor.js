@@ -17,7 +17,6 @@ import {
 require('draft-js/dist/Draft.css');
 require('./RichEditor.css');
 
-
 function findLinkEntities(contentBlock, callback) {
   contentBlock.findEntityRanges(
     (character) => {
