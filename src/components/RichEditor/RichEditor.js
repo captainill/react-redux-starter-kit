@@ -59,7 +59,8 @@ export class RichEditor extends React.Component {
     super(props);
 
     this.state = {
-      editorState: EditorState.createEmpty(decorator)
+      editorState: EditorState.createEmpty(decorator),
+      showLinkMenu: false
     };
 
     this.focus = () => this.refs.editor.focus();
@@ -73,6 +74,7 @@ export class RichEditor extends React.Component {
     this.toggleBlockType = (type) => this._toggleBlockType(type);
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
     this.toggleLinkStyle = (style) => this._toggleLinkStyle(style);
+
   }
 
   _handleKeyCommand(command) {
@@ -95,6 +97,10 @@ export class RichEditor extends React.Component {
   }
 
   _toggleInlineStyle(inlineStyle) {
+    this.setState({
+      showLinkMenu: false
+    });
+
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
@@ -114,7 +120,8 @@ export class RichEditor extends React.Component {
   }
 
   render() {
-    const { editorState } = this.state;
+    const { editorState, showLinkMenu } = this.state;
+    let linkMenu;
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
     let className = 'RichEditor-editor';
