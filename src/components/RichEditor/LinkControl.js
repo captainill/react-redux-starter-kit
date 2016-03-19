@@ -1,4 +1,7 @@
 import React, { PropTypes } from 'react';
+import PopoverMenu from '../Popover/PopoverMenu';
+import Button from '../Popover/Button';
+import RootCloseWrapper from 'react-overlays/lib/RootCloseWrapper';
 import {
   CompositeDecorator,
   EditorState,
@@ -24,6 +27,14 @@ class LinkControl extends React.Component {
     this.confirmLink = this._confirmLink.bind(this);
     this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
     this.removeLink = this._removeLink.bind(this);
+    this.onClose = this._onClose.bind(this);
+  }
+
+  _onClose() {
+    this.setState({
+      showURLInput: false,
+      urlValue: '',
+    });
   }
 
   _promptForLink(e) {
@@ -77,8 +88,23 @@ class LinkControl extends React.Component {
   }
 
   render() {
+    /* eslint-disable */
+    let popover;
     let urlInput;
     if (this.state.showURLInput) {
+      popover = (
+        <div style={{ height: 120 }}>
+          <RootCloseWrapper noWrap onRootClose={this.onClose}>
+            <PopoverMenu
+              id="popover"
+              title="Popover bottom">
+                <strong>Holy guacamole!</strong> Check this info.
+            </PopoverMenu>
+          </RootCloseWrapper>
+        </div>
+      );
+      /* eslint-enable */
+
       urlInput = (
         <div style={{ marginBottom: 10 }}>
           <input
@@ -110,6 +136,7 @@ class LinkControl extends React.Component {
           </button>
         </div>
         { urlInput }
+        { popover }
       </div>
     );
   }
