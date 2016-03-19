@@ -19,19 +19,15 @@ class Popover extends React.Component {
   }
 
   render() {
-    if(!this.props.selectionRect) return false;
-
     const { top, left } = this.props.selectionRect;
-    console.log(top, left);
+
     return (
       <div style={{ position: 'absolute', height: 120, top: top + 'px', left: left + 'px' }}>
-        <RootCloseWrapper noWrap onRootClose={this.onClose}>
-          <PopoverMenu
-            id="popove-menu"
-            title="PopoverMenu bottom">
-              {this.props.children}
-          </PopoverMenu>
-        </RootCloseWrapper>
+        <PopoverMenu
+          id="popove-menu"
+          title="PopoverMenu bottom">
+            {this.props.children}
+        </PopoverMenu>
       </div>
     );
   }

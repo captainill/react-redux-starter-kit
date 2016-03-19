@@ -1,8 +1,5 @@
 import React from 'react';
 import Popover from '../Popover/Popover';
-import {
-  getVisibleSelectionRect
-} from 'draft-js';
 
 class LinkMenu extends React.Component {
 
@@ -29,11 +26,10 @@ class LinkMenu extends React.Component {
   }
 
   render() {
-    const selectionRect = getVisibleSelectionRect(window);
-    console.log(selectionRect)
+
     return (
       <Popover
-        selectionRect={selectionRect}
+        selectionRect={this.props.selectionRect}
         editorState={this.props.editorState}
         toggleMenuClose={ this.props.toggleMenuClose }
       >
@@ -56,6 +52,7 @@ class LinkMenu extends React.Component {
 }
 
 LinkMenu.propTypes = {
+  selectionRect: React.PropTypes.object,
   toggleMenuClose: React.PropTypes.func,
   confirmLink: React.PropTypes.func,
   editorState: React.PropTypes.object
