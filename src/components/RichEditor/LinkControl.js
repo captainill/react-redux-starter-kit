@@ -57,6 +57,7 @@ class LinkControl extends React.Component {
 
   _confirmLink(e) {
     e.preventDefault();
+    e.stopImmediatePropagation();
     const { urlValue } = this.state;
     const entityKey = Entity.create('LINK', 'MUTABLE', { url: urlValue });
     this.props.onToggle(entityKey);
@@ -92,7 +93,7 @@ class LinkControl extends React.Component {
     let popover;
     let urlInput;
     if (this.state.showURLInput) {
-      popover = (
+      popover = ( //rootclose needs to be below the content triggering it or the mouseup will close it right after the clik that renders
         <div style={{ height: 120 }}>
           <RootCloseWrapper noWrap onRootClose={this.onClose}>
             <PopoverMenu
@@ -115,7 +116,7 @@ class LinkControl extends React.Component {
             value={this.state.urlValue}
             onKeyDown={this.onLinkInputKeyDown}
           />
-          <button onMouseDown={this.confirmLink}>
+        <button onClick={this.confirmLink}>
             Confirm
           </button>
         </div>
@@ -124,6 +125,8 @@ class LinkControl extends React.Component {
 
     return (
       <div className="RichEditor-controls">
+        { popover }
+        { urlInput }
         <div className="RichEditor-linkControl">
           <button
             onMouseDown={this.promptForLink}
@@ -135,8 +138,6 @@ class LinkControl extends React.Component {
             Remove Link
           </button>
         </div>
-        { urlInput }
-        { popover }
       </div>
     );
   }
