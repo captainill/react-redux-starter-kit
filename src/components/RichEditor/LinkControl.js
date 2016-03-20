@@ -56,6 +56,7 @@ class LinkControl extends React.Component {
   _confirmLink(e, urlValue) {
     e.preventDefault();
     const entityKey = Entity.create('LINK', 'MUTABLE', { url: urlValue });
+    console.log('entityKey', entityKey);
     this.props.onToggle(entityKey);
     this.resetState();
     // this.setState({

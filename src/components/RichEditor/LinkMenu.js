@@ -10,12 +10,13 @@ class LinkMenu extends React.Component {
       urlValue: '',
     };
 
-    this.onLinkInputKeyDown = () => this._onLinkInputKeyDown;
-    this.confirmLink = () => this._confirmLink;
+    this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
+    this.confirmLink = this._confirmLink.bind(this);
     this.onURLChange = (e) => this.setState({ urlValue: e.target.value });
   }
 
-  confirmLink(e) {
+  _confirmLink(e) {
+    console.log('test');
     this.props.confirmLink(e, this.state.urlValue);
   }
 
@@ -26,7 +27,6 @@ class LinkMenu extends React.Component {
   }
 
   render() {
-
     return (
       <Popover
         selectionRect={this.props.selectionRect}
@@ -43,7 +43,7 @@ class LinkMenu extends React.Component {
             onKeyDown={this.onLinkInputKeyDown}
           />
           <button onClick={this.confirmLink}>
-            Confirm
+            Confirm!
           </button>
         </div>
       </Popover>
