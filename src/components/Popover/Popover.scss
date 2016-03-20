@@ -70,4 +70,10 @@ $popover-arrow-outer-width:           ($popover-arrow-width + 1) !default;
       }
     }
   }
+
+  @at-root #{&}-btn{
+    &[disabled] {
+      opacity: .4;
+    }
+  }
 }

@@ -38,12 +38,12 @@ class LinkMenu extends React.Component {
           <label htmlFor="text-input">
             Text
             <input
-              onChange={this.onURLTextChange}
-              id="text-input"
-              ref="urlText"
               className="RichEditor-input"
-              type="text"
+              id="text-input"
+              onChange={this.onURLTextChange}
               placeholder=""
+              ref="urlText"
+              type="text"
               value={this.state.urlTextValue}
             />
           </label>
@@ -52,17 +52,21 @@ class LinkMenu extends React.Component {
           <label htmlFor="url-input">
             Link
             <input
-              onChange={this.onURLChange}
-              id="url-input"
-              ref="url"
               className="RichEditor-input"
-              type="text"
-              placeholder="type url or paste"
-              value={this.state.urlValue}
+              id="url-input"
+              onChange={this.onURLChange}
               onKeyDown={this.onLinkInputKeyDown}
+              placeholder="type url or paste"
+              ref="url"
+              type="text"
+              value={this.state.urlValue}
             />
           </label>
-          <button onClick={this.applyLink}>
+          <button
+            className="Popover-btn"
+            disabled={!(this.state.urlValue.length > 0)}
+            onClick={this.applyLink}
+          >
             Apply
           </button>
         </div>
