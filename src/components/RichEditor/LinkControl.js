@@ -31,17 +31,22 @@ class LinkControl extends React.Component {
     this.resetState = this._resetState.bind(this);
   }
 
+  componentWillUnmount() {
+    this.removeDocumentClick();
+  }
+
   _promptForLink(e) {
     e.preventDefault();
     const editorState = this.props.editorState;
     const selection = editorState.getSelection();
-    console.log(!selection.isCollapsed())
+
     if (!selection.isCollapsed()) {
       this.setState({
         showLinkMenu: true,
         selectionRect: getVisibleSelectionRect(window)
       });
-    this.addDocumentClick();
+
+      this.addDocumentClick();
     // }, () => {
     //   setTimeout(() => this.refs.url.focus(), 0);
     // }
@@ -62,7 +67,6 @@ class LinkControl extends React.Component {
   }
 
   _toggleMenuClose() {
-    console.log('toggle menu close');
     this.resetState();
   }
 
@@ -73,23 +77,17 @@ class LinkControl extends React.Component {
     });
   }
 
-  componentWillUnmount() {
-    this.removeDocumentClick();
-  }
-
   _addDocumentClick() {
-    console.log('_addDocumentClick doc click')
     window.__myapp_container.addEventListener('click', this.handleDocumentClick);
   }
 
   _removeDocumentClick() {
-    console.log('remove the doc click')
     window.__myapp_container.removeEventListener('click', this.handleDocumentClick);
   }
 
   /* using fat arrow to bind to instance */
   handleDocumentClick = (e) => {
-    if (!this.state.showLinkMenu)  return;
+    if (!this.state.showLinkMenu) return;
 
     const linkmenu = ReactDOM.findDOMNode(this.refs.linkmenu);
     const promptbutton = ReactDOM.findDOMNode(this.refs.promptbutton);
@@ -114,8 +112,6 @@ class LinkControl extends React.Component {
         />
       );
     }
-
-    console.log('linkMenu', linkMenu);
 
     return (
       <div className="RichEditor-controls">

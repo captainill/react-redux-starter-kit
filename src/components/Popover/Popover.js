@@ -4,6 +4,8 @@ import PopoverMenu from '../Popover/PopoverMenu';
 import Button from '../Popover/Button';
 import RootCloseWrapper from 'react-overlays/lib/RootCloseWrapper';
 
+require('./Popover.scss');
+
 class Popover extends React.Component {
   constructor(props) {
     super(props);
@@ -12,22 +14,26 @@ class Popover extends React.Component {
   }
 
   _onClose() {
-    console.log('onclose')
-    if(this.props.toggleMenuClose) {
+    if (this.props.toggleMenuClose) {
       this.props.toggleMenuClose();
     }
   }
 
   render() {
-    const { top, left } = this.props.selectionRect;
+    const { bottom, left } = this.props.selectionRect;
+
+    const style = {
+      left: left + 'px',
+      top: bottom + 'px',
+      position: 'absolute'
+    };
 
     return (
-      <div style={{ position: 'absolute', height: 120, top: top + 'px', left: left + 'px' }}>
-        <PopoverMenu
-          id="popove-menu"
-          title="PopoverMenu bottom">
-            {this.props.children}
-        </PopoverMenu>
+      <div role="tooltip" {...this.props} className="Popover top" style={style} title={null}>
+        <div className="Popover-arrow" />
+        <div className="Popover-content">
+          {this.props.children}
+        </div>
       </div>
     );
   }
@@ -38,7 +44,6 @@ Popover.propTypes = {
   toggleMenuClose: React.PropTypes.func,
   editorState: React.PropTypes.object,
   selectionRect: React.PropTypes.object
-}
-
+};
 
 export default Popover;
