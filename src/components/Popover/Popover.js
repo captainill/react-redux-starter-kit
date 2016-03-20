@@ -40,7 +40,7 @@ class Popover extends React.Component {
 }
 
 Popover.propTypes = {
-  children: React.PropTypes.object,
+  children: React.PropTypes.array,
   toggleMenuClose: React.PropTypes.func,
   editorState: React.PropTypes.object,
   selectionRect: React.PropTypes.object

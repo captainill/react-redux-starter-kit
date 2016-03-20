@@ -10,6 +10,7 @@ import {
   Editor,
   EditorState,
   Entity,
+  Modifier,
   RichUtils
 } from 'draft-js';
 
@@ -70,11 +71,10 @@ export class RichEditor extends React.Component {
       console.log(convertToRaw(content));
     };
 
-    this.handleKeyCommand = (command) => this._handleKeyCommand(command);
-    this.toggleBlockType = (type) => this._toggleBlockType(type);
-    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-    this.toggleLinkStyle = (style) => this._toggleLinkStyle(style);
-
+    this.handleKeyCommand = this._handleKeyCommand.bind(this);
+    this.toggleBlockType = this._toggleBlockType.bind(this);
+    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+    this.toggleLinkStyle = this._toggleLinkStyle.bind(this);
   }
 
   _handleKeyCommand(command) {
@@ -109,10 +109,25 @@ export class RichEditor extends React.Component {
     );
   }
 
-  _toggleLinkStyle(entityKey) {
+  _toggleLinkStyle(entityKey, urlTextValue) {
+    const editorState = this.state.editorState;
+    const content = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    const block = editorState
+           .getCurrentContent()
+           .getBlockForKey(selection.getStartKey());
+
+    const newContentState = Modifier.replaceText(
+        content,
+        selection,
+        urlTextValue,
+        null, //editorState.getCurrentInlineStyle(),
+        entityKey
+      );
+
     this.onChange(
       RichUtils.toggleLink(
-        this.state.editorState,
+        EditorState.push(this.state.editorState, newContentState, 'insert-characters'),
         this.state.editorState.getSelection(),
         entityKey
       )

@@ -16,14 +16,16 @@ class LinkControl extends React.Component {
 
     this.state = {
       showLinkMenu: false,
-      selectionRect: null
+      selectionRect: null,
+      linkText: '',
+      urlText: ''
     };
 
     // this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => this.setState({ editorState });
 
     this.promptForLink = this._promptForLink.bind(this);
-    this.confirmLink = this._confirmLink.bind(this);
+    this.applyLink = this._applyLink.bind(this);
     // this.removeLink = this._removeLink.bind(this);
     this.toggleMenuClose = this._toggleMenuClose.bind(this);
     this.addDocumentClick = this._addDocumentClick.bind(this);
@@ -39,11 +41,18 @@ class LinkControl extends React.Component {
     e.preventDefault();
     const editorState = this.props.editorState;
     const selection = editorState.getSelection();
+    const block = editorState
+      .getCurrentContent()
+      .getBlockForKey(selection.getStartKey())
+    const blockText = block.getText();
+    const url = (block.getEntityAt(0)) ? Entity.get(block.getEntityAt(0)).getData().url : '';
 
     if (!selection.isCollapsed()) {
       this.setState({
         showLinkMenu: true,
-        selectionRect: getVisibleSelectionRect(window)
+        selectionRect: getVisibleSelectionRect(window),
+        linkText: blockText,
+        urlText: url
       });
 
       this.addDocumentClick();
@@ -53,11 +62,10 @@ class LinkControl extends React.Component {
     }
   }
 
-  _confirmLink(e, urlValue) {
+  _applyLink(e, urlValue, urlTextValue) {
     e.preventDefault();
     const entityKey = Entity.create('LINK', 'MUTABLE', { url: urlValue });
-    console.log('entityKey', entityKey);
-    this.props.onToggle(entityKey);
+    this.props.onToggle(entityKey, urlTextValue);
     this.resetState();
     // this.setState({
     //   showLinkMenu: false,
@@ -107,9 +115,11 @@ class LinkControl extends React.Component {
         <LinkMenu
           ref="linkmenu"
           editorState={editorState}
-          confirmLink={this.confirmLink}
+          applyLink={this.applyLink}
           toggleMenuClose={this.toggleMenuClose}
           selectionRect={this.state.selectionRect}
+          linkText={this.state.linkText}
+          urlText={this.state.urlText}
         />
       );
     }
@@ -124,9 +134,6 @@ class LinkControl extends React.Component {
             style={{ marginRight: 10 }}
           >
             Add Link
-          </button>
-          <button onMouseDown={this.removeLink}>
-            Remove Link
           </button>
         </div>
       </div>

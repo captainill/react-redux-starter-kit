@@ -7,22 +7,23 @@ class LinkMenu extends React.Component {
     super(props);
 
     this.state = {
-      urlValue: '',
+      urlValue: props.urlText,
+      urlTextValue: props.linkText
     };
 
     this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
-    this.confirmLink = this._confirmLink.bind(this);
+    this.applyLink = this._applyLink.bind(this);
     this.onURLChange = (e) => this.setState({ urlValue: e.target.value });
+    this.onURLTextChange = (e) => this.setState({ urlTextValue: e.target.value });
   }
 
-  _confirmLink(e) {
-    console.log('test');
-    this.props.confirmLink(e, this.state.urlValue);
+  _applyLink(e) {
+    this.props.applyLink(e, this.state.urlValue, this.state.urlTextValue);
   }
 
   _onLinkInputKeyDown(e) {
     if (e.which === 13) {
-      this.confirmLink(e);
+      this.applyLink(e);
     }
   }
 
@@ -34,16 +35,35 @@ class LinkMenu extends React.Component {
         toggleMenuClose={ this.props.toggleMenuClose }
       >
         <div style={{ marginBottom: 10 }}>
-          <input
-            onChange={this.onURLChange}
-            ref="url"
-            className="RichEditor-input"
-            type="text"
-            value={this.state.urlValue}
-            onKeyDown={this.onLinkInputKeyDown}
-          />
-          <button onClick={this.confirmLink}>
-            Confirm!
+          <label htmlFor="text-input">
+            Text
+            <input
+              onChange={this.onURLTextChange}
+              id="text-input"
+              ref="urlText"
+              className="RichEditor-input"
+              type="text"
+              placeholder=""
+              value={this.state.urlTextValue}
+            />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="url-input">
+            Link
+            <input
+              onChange={this.onURLChange}
+              id="url-input"
+              ref="url"
+              className="RichEditor-input"
+              type="text"
+              placeholder="type url or paste"
+              value={this.state.urlValue}
+              onKeyDown={this.onLinkInputKeyDown}
+            />
+          </label>
+          <button onClick={this.applyLink}>
+            Apply
           </button>
         </div>
       </Popover>
@@ -54,8 +74,10 @@ class LinkMenu extends React.Component {
 LinkMenu.propTypes = {
   selectionRect: React.PropTypes.object,
   toggleMenuClose: React.PropTypes.func,
-  confirmLink: React.PropTypes.func,
-  editorState: React.PropTypes.object
+  applyLink: React.PropTypes.func,
+  editorState: React.PropTypes.object,
+  linkText: React.PropTypes.string,
+  urlText: React.PropTypes.string
 };
 
 export default LinkMenu;
