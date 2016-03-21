@@ -14,7 +14,6 @@ import {
   RichUtils
 } from 'draft-js';
 
-
 require('draft-js/dist/Draft.css');
 require('./RichEditor.css');
 
@@ -77,6 +76,10 @@ export class RichEditor extends React.Component {
     this.toggleLinkStyle = this._toggleLinkStyle.bind(this);
   }
 
+  componentDidMount() {
+    this.focus();
+  }
+
   _handleKeyCommand(command) {
     const { editorState } = this.state;
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -113,22 +116,34 @@ export class RichEditor extends React.Component {
     const editorState = this.state.editorState;
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
-    const block = editorState
-           .getCurrentContent()
-           .getBlockForKey(selection.getStartKey());
+    let newContentState;
+    let newEditorState;
 
-    const newContentState = Modifier.replaceText(
+    //if nothing is selected you need to create the block
+    if (selection.isCollapsed()) {
+      newContentState = Modifier.insertText(
+        content,
+        selection,
+        urlTextValue,
+        null,
+        entityKey
+      );
+      newEditorState = EditorState.push(editorState, newContentState, 'insert-fragment');
+    } else {
+      newContentState = Modifier.replaceText(
         content,
         selection,
         urlTextValue,
         null, //editorState.getCurrentInlineStyle(),
         entityKey
       );
+      newEditorState = EditorState.push(this.state.editorState, newContentState, 'insert-characters');
+    }
 
     this.onChange(
       RichUtils.toggleLink(
-        EditorState.push(this.state.editorState, newContentState, 'insert-characters'),
-        this.state.editorState.getSelection(),
+        newEditorState,
+        editorState.getSelection(),
         entityKey
       )
     );
@@ -148,7 +163,7 @@ export class RichEditor extends React.Component {
     }
 
     return (
-      <div className="RichEditor-root">
+      <div className="RichEditor-root" ref="editorRoot">
         <BlockStyleControls
           editorState={editorState}
           onToggle={this.toggleBlockType}
@@ -161,7 +176,7 @@ export class RichEditor extends React.Component {
           editorState={editorState}
           onToggle={this.toggleLinkStyle}
         />
-        <div className={className} onClick={this.focus}>
+        <div className={className} >
           <Editor
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}

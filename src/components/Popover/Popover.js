@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import PopoverMenu from '../Popover/PopoverMenu';
 import Button from '../Popover/Button';
 import RootCloseWrapper from 'react-overlays/lib/RootCloseWrapper';
 

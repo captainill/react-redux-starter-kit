@@ -9,6 +9,7 @@ import {
   RichUtils,
   getVisibleSelectionRect
 } from 'draft-js';
+import { closest, getElementOffset } from '../../utils/domHelpers';
 
 class LinkControl extends React.Component {
   constructor(props) {
@@ -43,29 +44,37 @@ class LinkControl extends React.Component {
     const selection = editorState.getSelection();
     const block = editorState
       .getCurrentContent()
-      .getBlockForKey(selection.getStartKey())
+      .getBlockForKey(selection.getStartKey());
     const blockText = block.getText();
     const url = (block.getEntityAt(0)) ? Entity.get(block.getEntityAt(0)).getData().url : '';
+    let selectionRect;
 
-    if (!selection.isCollapsed()) {
-      this.setState({
-        showLinkMenu: true,
-        selectionRect: getVisibleSelectionRect(window),
-        linkText: blockText,
-        urlText: url
-      });
+    if (selection.isCollapsed()) {
+      const btnTargetOffset = getElementOffset(e.target);
+      selectionRect = { bottom: btnTargetOffset.top + 20, left: btnTargetOffset.left };
+    } else {
+      selectionRect = getVisibleSelectionRect(window);
+    }
 
-      this.addDocumentClick();
+    this.setState({
+      showLinkMenu: true,
+      linkText: blockText,
+      urlText: url,
+      selectionRect
+    });
+
+    this.addDocumentClick();
     // }, () => {
     //   setTimeout(() => this.refs.url.focus(), 0);
     // }
-    }
+    // }
   }
 
   _applyLink(e, urlValue, urlTextValue) {
     e.preventDefault();
     const entityKey = Entity.create('LINK', 'MUTABLE', { url: urlValue });
-    this.props.onToggle(entityKey, urlTextValue);
+    const checkUrlText = (urlTextValue === '') ? urlValue : urlTextValue;
+    this.props.onToggle(entityKey, checkUrlText);
     this.resetState();
     // this.setState({
     //   showLinkMenu: false,

@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-starter-kit",
-  "version": "2.0.0-alpha.1",
-  "description": "Get started with React, Redux, and React-Router!",
+  "name": "cms",
+  "version": "0.0.1",
+  "description": "CMS Test",
   "main": "index.js",
   "engines": {
     "node": ">=4.2.0",
@@ -59,12 +59,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
+    "url": "git+https://github.com/captainill/react-redux-starter-kit-cms.git"
   },
-  "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
+  "author": "JT <jonthomas0@gmail.com> (http://ofitsownkind.com)",
   "license": "MIT",
   "dependencies": {
-    "@oiok/react-tag-select": "^0.1.1",
+    "@oiok/react-tag-select": "^0.1.3",
     "basscss": "^8.0.1",
     "classnames": "^2.2.3",
     "connect-history-api-fallback": "^1.1.0",
