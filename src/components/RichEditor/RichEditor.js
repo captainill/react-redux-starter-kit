@@ -13,6 +13,7 @@ import {
   Modifier,
   RichUtils
 } from 'draft-js';
+import moveSelectionToEnd from '../../utils/draftjs/moveSelectionToEnd';
 
 require('draft-js/dist/Draft.css');
 require('./RichEditor.css');
@@ -71,6 +72,7 @@ export class RichEditor extends React.Component {
     };
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
+    this.handleBeforeInput = this._handleBeforeInput.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
     this.toggleLinkStyle = this._toggleLinkStyle.bind(this);
@@ -88,6 +90,11 @@ export class RichEditor extends React.Component {
       return true;
     }
     return false;
+  }
+
+  //return true to stop the default behaviour
+  _handleBeforeInput(char) {
+    console.log(/\s/.test(char)); // true when white space is used (space)
   }
 
   _toggleBlockType(blockType) {
@@ -119,7 +126,6 @@ export class RichEditor extends React.Component {
     let newContentState;
     let newEditorState;
 
-    //if nothing is selected you need to create the block
     if (selection.isCollapsed()) {
       newContentState = Modifier.insertText(
         content,
@@ -134,10 +140,10 @@ export class RichEditor extends React.Component {
         content,
         selection,
         urlTextValue,
-        null, //editorState.getCurrentInlineStyle(),
+        null,
         entityKey
       );
-      newEditorState = EditorState.push(this.state.editorState, newContentState, 'insert-characters');
+      newEditorState = EditorState.push(editorState, newContentState, 'insert-characters');
     }
 
     this.onChange(
@@ -182,6 +188,7 @@ export class RichEditor extends React.Component {
             customStyleMap={styleMap}
             editorState={editorState}
             handleKeyCommand={this.handleKeyCommand}
+            handleBeforeInput={this.handleBeforeInput}
             onChange={this.onChange}
             placeholder="Tell a story..."
             ref="editor"

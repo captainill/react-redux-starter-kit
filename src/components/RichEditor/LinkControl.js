@@ -73,8 +73,8 @@ class LinkControl extends React.Component {
   _applyLink(e, urlValue, urlTextValue) {
     e.preventDefault();
     const entityKey = Entity.create('LINK', 'MUTABLE', { url: urlValue });
-    const checkUrlText = (urlTextValue === '') ? urlValue : urlTextValue;
-    this.props.onToggle(entityKey, checkUrlText);
+    const checkurlTextValue = (urlTextValue === '') ? urlValue : urlTextValue;
+    this.props.onToggle(entityKey, checkurlTextValue);
     this.resetState();
     // this.setState({
     //   showLinkMenu: false,
