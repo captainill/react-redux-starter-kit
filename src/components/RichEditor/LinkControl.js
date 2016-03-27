@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Button from '../Popover/Button';
 import LinkMenu from './LinkMenu';
+import addLink from './modifiers/addLink';
 import {
   CompositeDecorator,
   EditorState,
@@ -72,9 +73,11 @@ class LinkControl extends React.Component {
 
   _applyLink(e, urlValue, urlTextValue) {
     e.preventDefault();
-    const entityKey = Entity.create('LINK', 'MUTABLE', { url: urlValue });
-    const checkurlTextValue = (urlTextValue === '') ? urlValue : urlTextValue;
-    this.props.onToggle(entityKey, checkurlTextValue);
+
+    const selection = this.props.editorState.getSelection();
+    const newEditorState = addLink(this.props.editorState, urlValue, urlTextValue, selection);
+
+    this.props.onToggle(newEditorState);
     this.resetState();
     // this.setState({
     //   showLinkMenu: false,

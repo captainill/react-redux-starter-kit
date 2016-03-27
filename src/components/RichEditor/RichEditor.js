@@ -16,7 +16,7 @@ import {
 import moveSelectionToEnd from '../../utils/draftjs/moveSelectionToEnd';
 
 require('draft-js/dist/Draft.css');
-require('./RichEditor.css');
+require('./scss/RichEditor.css');
 
 function findLinkEntities(contentBlock, callback) {
   contentBlock.findEntityRanges(
@@ -119,40 +119,8 @@ export class RichEditor extends React.Component {
     );
   }
 
-  _toggleLinkStyle(entityKey, urlTextValue) {
-    const editorState = this.state.editorState;
-    const content = editorState.getCurrentContent();
-    const selection = editorState.getSelection();
-    let newContentState;
-    let newEditorState;
-
-    if (selection.isCollapsed()) {
-      newContentState = Modifier.insertText(
-        content,
-        selection,
-        urlTextValue,
-        null,
-        entityKey
-      );
-      newEditorState = EditorState.push(editorState, newContentState, 'insert-fragment');
-    } else {
-      newContentState = Modifier.replaceText(
-        content,
-        selection,
-        urlTextValue,
-        null,
-        entityKey
-      );
-      newEditorState = EditorState.push(editorState, newContentState, 'insert-characters');
-    }
-
-    this.onChange(
-      RichUtils.toggleLink(
-        newEditorState,
-        editorState.getSelection(),
-        entityKey
-      )
-    );
+  _toggleLinkStyle(newEditorState) {
+    this.onChange(newEditorState);
   }
 
   render() {
